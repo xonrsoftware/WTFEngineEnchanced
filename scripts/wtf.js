@@ -1,5 +1,4 @@
-
-var WTF = (function() {
+var WTF = (function () {
 
     'use strict';
 
@@ -34,7 +33,7 @@ var WTF = (function() {
     */
 
     function start() {
-        
+
         // Copy out templates then remove from corpus
 
         templates = corpus.template;
@@ -56,28 +55,27 @@ var WTF = (function() {
 
     function getTotalNumOptions() {
         var num = 0
-        for(var i = 0; i < templates.length; i++) {
+        for (var i = 0; i < templates.length; i++) {
             num += getNumTemplateOptions(templates[i])
         }
         return num
     }
 
-    function getNumTemplateOptions( template ) {
+    function getNumTemplateOptions(template) {
         var type, iter = 0, // Safety mechanism
-            item = regex.exec( template ),
+            item = regex.exec(template),
             copy = cloneCorpus();
 
         var num = 0
-        while ( item && ++iter < 1000 ) {
-            type = item[ 0 ].substr(1);
+        while (item && ++iter < 1000) {
+            type = item[0].substr(1);
             var typeNum = corpus[type].length
-            if(num == 0) {
+            if (num == 0) {
                 num = corpus[type].length
-            }
-            else {
+            } else {
                 num = num * corpus[type].length
             }
-            item = regex.exec( template );
+            item = regex.exec(template);
         }
         return num
     }
@@ -91,23 +89,25 @@ var WTF = (function() {
       ------------------------------------------------------------
     */
 
-    function parseCSV( csv ) {
+    function parseCSV(csv) {
 
-        var i, j, k, n, m, cols, keys = {}, data = {}, rows = csv.split( '\n' );
+        var i, j, k, n, m, cols, keys = {},
+            data = {},
+            rows = csv.split('\n');
 
-        for ( i = 0, n = rows.length; i < n; i++, j = i - 1 ) {
+        for (i = 0, n = rows.length; i < n; i++, j = i - 1) {
 
-            cols = rows[ i ].replace( RE_QUOTE, escape ).split( ',' );
+            cols = rows[i].replace(RE_QUOTE, escape).split(',');
 
-            for ( k = 0, m = cols.length; k < m; k++ ) {
+            for (k = 0, m = cols.length; k < m; k++) {
 
-                if ( i === 0 ) {
+                if (i === 0) {
 
-                    data[ keys[ k ] = cols[ k ].toLowerCase() ] = [];
+                    data[keys[k] = cols[k].toLowerCase()] = [];
 
-                } else if ( cols[ k ] ) {
+                } else if (cols[k]) {
 
-                    data[ keys[ k ] ][ j ] = unescape( cols[ k ] ).replace( /^\"|\"$/g, '' );
+                    data[keys[k]][j] = unescape(cols[k]).replace(/^\"|\"$/g, '');
                 }
             }
         }
@@ -124,30 +124,33 @@ var WTF = (function() {
       ------------------------------------------------------------
     */
 
-    function parseJSON( json ) {
+    function parseJSON(json) {
 
-        var i, n, key, val, map = {}, keys = {}, data = {}, rows = json.feed.entry;
+        var i, n, key, val, map = {},
+            keys = {},
+            data = {},
+            rows = json.feed.entry;
 
-        for ( key in rows[0] ) {
-            
-            if ( RE_COL.test( key ) ) {
-                
-                map[ key ] = key.match( RE_COL )[ 1 ].toLowerCase();
-                keys[ key ] = [];
+        for (key in rows[0]) {
+
+            if (RE_COL.test(key)) {
+
+                map[key] = key.match(RE_COL)[1].toLowerCase();
+                keys[key] = [];
             }
         }
 
-        for ( key in keys ) {
-            
-            data[ map[ key ] ] = keys[ key ];
+        for (key in keys) {
 
-            for ( i = 0, n = rows.length; i < n; i++ ) {
+            data[map[key]] = keys[key];
 
-                val = rows[ i ][ key ].$t;
+            for (i = 0, n = rows.length; i < n; i++) {
 
-                if ( val && val.length ) {
+                val = rows[i][key].$t;
 
-                    keys[ key ].push( val );
+                if (val && val.length) {
+
+                    keys[key].push(val);
                 }
             }
         }
@@ -165,14 +168,14 @@ var WTF = (function() {
 
     function initUI() {
 
-        $( '.loading' ).remove();
+        $('.loading').remove();
 
         dom = {
-            generate: $( '#generate' ),
-            output: $( '#output' )
+            generate: $('#generate'),
+            output: $('#output')
         };
 
-        dom.generate.click( function() {
+        dom.generate.click(function () {
             generate();
             return false;
         });
@@ -190,9 +193,9 @@ var WTF = (function() {
 
         var types = [];
 
-        for ( var type in corpus )
+        for (var type in corpus)
 
-            types.push( type );
+            types.push(type);
 
         types = types.sort(function (a, b) {
             if (a.length == b.length) {
@@ -200,10 +203,10 @@ var WTF = (function() {
             }
             return a.length > b.length ? -1 : 1
         })
-        
-        var content = '@(type)'.replace( 'type', types.join( '|' ) );
 
-        regex = new RegExp( content, 'gi' );
+        var content = '@(type)'.replace('type', types.join('|'));
+
+        regex = new RegExp(content, 'gi');
     }
 
     /*
@@ -217,56 +220,65 @@ var WTF = (function() {
     function generate() {
 
         var type, text, part, iter = 0, // Safety mechanism
-            idea = randomItem( templates ),
-            item = regex.exec( idea ),
+            idea = randomItem(templates),
+            item = regex.exec(idea),
             copy = cloneCorpus();
+        if (idea.indexOf("/js/") == 0) {
+            let cropindex = 4;
+            if (idea[cropindex] == " ") {
+                while (true) {
+                    if (idea[++cropindex] != " ") break;
+                }
+            }
+            eval(idea.slice(cropindex));
+        } else {
+            while (item && ++iter < 1000) {
 
-        while ( item && ++iter < 1000 ) {
+                type = item[0];
+                text = item[1];
 
-            type = item[ 0 ];
-            text = item[ 1 ];
+                part = randomItem(copy[text], true);
+                idea = idea.replace(type, part);
 
-            part = randomItem( copy[ text ], true );
-            idea = idea.replace( type, part );
+                regex.lastIndex = 0;
+                item = regex.exec(idea);
+            }
 
-            regex.lastIndex = 0;
-            item = regex.exec( idea );
-        }
+            // Update output
 
-        // Update output
-
-        dom.generate.text( randomItem( responses ) );
-        dom.output.html(
-            '<dl>' +
-                '<dt>' + randomItem( headings ) + '</dt>' +
+            dom.generate.text(randomItem(responses));
+            dom.output.html(
+                '<dl>' +
+                '<dt>' + randomItem(headings) + '</dt>' +
                 '<dd>' + idea + '</dd>' +
-            '</dl>'
-        );
+                '</dl>'
+            );
 
-        // Toggle animation
+            // Toggle animation
 
-        setTimeout( showOutput, 0 );
-        hideOutput();
+            setTimeout(showOutput, 0);
+            hideOutput();
+        }
     }
 
     function hideOutput() {
 
-        dom.output.removeClass( 'animate' ).css( 'opacity', 0 );
+        dom.output.removeClass('animate').css('opacity', 0);
     }
 
     function showOutput() {
 
-        dom.output.addClass( 'animate' ).css( 'opacity', 1 );
+        dom.output.addClass('animate').css('opacity', 1);
     }
 
-    function randomItem( list, remove ) {
+    function randomItem(list, remove) {
 
-        var index = ~~( Math.random() * list.length );
-        var item = list[ index ];
+        var index = ~~(Math.random() * list.length);
+        var item = list[index];
 
-        if ( remove )
+        if (remove)
 
-            list.splice( index, 1 );
+            list.splice(index, 1);
 
         return item;
     }
@@ -275,10 +287,10 @@ var WTF = (function() {
 
         var copy = {};
 
-        for ( var key in corpus )
+        for (var key in corpus)
 
-            copy[ key ] = corpus[ key ].concat();
-        
+            copy[key] = corpus[key].concat();
+
         return copy;
     }
 
@@ -312,39 +324,39 @@ var WTF = (function() {
 
         */
 
-        init: function( data ) {
+        init: function (data) {
 
-            if ( !data ) throw data + ' is not a valid corpus';
+            if (!data) throw data + ' is not a valid corpus';
 
-            if ( typeof data === 'string' ) {
+            if (typeof data === 'string') {
 
-                if ( RE_JSON.test( data ) ) {
+                if (RE_JSON.test(data)) {
 
                     // JSON
 
                     $.ajax({
                         url: data,
                         dataType: 'json',
-                        success: function( data, status, xhr ) {
+                        success: function (data, status, xhr) {
                             corpus = data;
                             start();
                         },
-                        error: function( xhr, errorType, error ) {
+                        error: function (xhr, errorType, error) {
                             throw 'Cannot load JSON data: ' + error;
                         }
                     });
 
-                } else if ( RE_KEY.test( data ) ) {
+                } else if (RE_KEY.test(data)) {
 
                     // JSON
 
                     $.ajax({
-                        url: DOCS_PATH.replace( '{key}', data ),
-                        success: function( data, status, xhr ) {
-                            corpus = parseJSON( data );
+                        url: DOCS_PATH.replace('{key}', data),
+                        success: function (data, status, xhr) {
+                            corpus = parseJSON(data);
                             start();
                         },
-                        error: function( xhr, errorType, error ) {
+                        error: function (xhr, errorType, error) {
                             throw 'Cannot load spreadsheet. Is it published? (@see https://support.google.com/drive/answer/37579?hl=en)';
                         }
                     });
@@ -354,7 +366,7 @@ var WTF = (function() {
                     throw 'Unrecognised data format: ' + data;
                 }
 
-            } else if ( typeof data === 'object' ) {
+            } else if (typeof data === 'object') {
 
                 // Object
 

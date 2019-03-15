@@ -1,14 +1,16 @@
 # WTF Engine
+Enchanced to support JavaScript templates. Check [`main.js`](https://github.com/xonrsoftware/WTFEngineEnchanced/blob/master/scripts/main.js).
 
-Inspired by [WhatTheFuckShouldIMakeForDinner.com](http://whatthefuckshouldimakefordinner.com/), in 2011 I made [WhatTheFuckIsMyMashup.com](http://whatthefuckismymashup.com/) and released this simple tool, the [WTFEngine](https://github.com/soulwire/WTFEngine/), for generating similar websites.
+Inspired by [WhatTheFuckShouldIMakeForDinner.com](http://whatthefuckshouldimakefordinner.com/)
+The [WTFEngine](https://github.com/xonrsoftware/WTFEngineEnchanced/), for generating similar websites.
 
 It's very simple to use and now allows you to populate it using either vanilla JavaScript objects, JSON files or direct feeds from Google spreadsheets.
 
 ## How to use it
 
-To make your own, simply [clone](github-mac://openRepo/https://github.com/soulwire/WTFEngine) or [download](https://github.com/soulwire/WTFEngine/archive/master.zip) this repository and start populating the engine with your content.
+To make your own, simply [clone](github-mac://openRepo/https://github.com/xonrsoftware/WTFEngineEnchanced) or [download](https://github.com/xonrsoftware/WTFEngineEnchanced/archive/master.zip) this repository and start populating the engine with your content.
 
-You can populate it using one of three different methods. Each is controlled from [`main.js`](https://github.com/soulwire/WTFEngine/blob/master/scripts/main.js) (where you will find commented examples of each technique.)
+You can populate it using one of three different methods. Each is controlled from [`main.js`](https://github.com/xonrsoftware/WTFEngineEnchanced/blob/master/scripts/main.js) (where you will find commented examples of each technique.)
 
 1. JavaScript Object literal
 2. A JSON file
@@ -74,7 +76,7 @@ I've been pleasantly surprised to find several people using this template to cre
 - [Shit PR Ideas](http://shitprideas.com/)
 - [What the Fuck is my Mashup](http://whatthefuckismymashup.com/)
 
-If you have made one, or know of any, please [let me know](https://github.com/soulwire/WTFEngine/issues/new).
+If you have made one, or know of any, please [let me know](https://github.com/xonrsoftware/WTFEngineEnchanced/issues/new).
 
 ## Notes
 
