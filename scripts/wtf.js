@@ -217,12 +217,14 @@ var WTF = (function () {
       ------------------------------------------------------------
     */
 
-    function generate() {
+    function generate(template = undefined) {
 
-        var type, text, part, iter = 0, // Safety mechanism
-            idea = randomItem(templates),
-            item = regex.exec(idea),
-            copy = cloneCorpus();
+        var type, text, part, iter = 0; // Safety mechanism
+        var idea;
+        if (template == undefined) idea = randomItem(templates);
+        else idea = template;
+        var item = regex.exec(idea);
+        var copy = cloneCorpus();
         if (idea.indexOf("/js/") == 0) {
             let cropindex = 4;
             if (idea[cropindex] == " ") {
